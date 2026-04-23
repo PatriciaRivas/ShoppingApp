@@ -19,17 +19,17 @@ public class OrderRepository {
 	public OrderDto saveOrder(OrderDto order) {
 		OrderDto orderUser = this.getOrderByUserId(order.getUserId());
 		if(orderUser!=null) {
-			order.setId(orderUser.getId());
+			order.setOrderId(orderUser.getOrderId());
 		}
-		if(order.getId()==null) {
-			order.setId(sequence.getAndIncrement());
+		if(order.getOrderId()==null) {
+			order.setOrderId(sequence.getAndIncrement());
 		}
 		orders.add(order);
 		return order;
 	}
 	
 	public OrderDto getOrderById(Integer orderId) {
-		return orders.stream().filter(order -> orderId.equals(order.getId())).findFirst().orElse(null);
+		return orders.stream().filter(order -> orderId.equals(order.getOrderId())).findFirst().orElse(null);
 	}
 	
 	public OrderDto getOrderByUserId(Integer userId) {

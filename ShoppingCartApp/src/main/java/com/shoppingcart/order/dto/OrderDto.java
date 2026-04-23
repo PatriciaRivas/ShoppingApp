@@ -7,17 +7,18 @@ import com.shoppingcart.products.dto.ProductDto;
 
 public class OrderDto {
 
-	private Integer id;
+	private Integer orderId;
 	private Integer userId;
 	private List<ProductDto> products;
 	private Double total;
 	private OrderStatus status;
 	
-	public Integer getId() {
-		return id;
+	
+	public Integer getOrderId() {
+		return orderId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 	public Integer getUserId() {
 		return userId;

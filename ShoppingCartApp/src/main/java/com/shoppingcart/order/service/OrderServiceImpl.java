@@ -2,9 +2,9 @@ package com.shoppingcart.order.service;
 
 import org.springframework.stereotype.Service;
 
-import com.shoppingcart.order.dao.OrderRepository;
 import com.shoppingcart.order.dto.OrderDto;
-import com.shoppingcart.order.dto.OrderResponse;
+import com.shoppingcart.order.enums.OrderStatus;
+import com.shoppingcart.order.repository.OrderRepository;
 import com.shoppingcart.products.dto.ProductDto;
 import com.shoppingcart.utils.exception.BadRequestException;
 
@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public OrderResponse createOrderProducts(OrderDto order) {
+	public OrderDto createOrderProducts(OrderDto order) {
 		
 		if (order==null) {
 			throw new BadRequestException("Order cannot be null");
@@ -26,11 +26,9 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getProducts()==null || order.getProducts().isEmpty()) {
 			throw new BadRequestException("Order must containt at least one product");
 		}
-
-		OrderDto orderSaved =  orderRepository.saveOrder(order);
 		
 		Double total = 0.0;
-		for(ProductDto product : orderSaved.getProducts()) {
+		for(ProductDto product : order.getProducts()) {
 			if(product==null) {
 				throw new BadRequestException("Product cannot be null");
 			}
@@ -42,13 +40,10 @@ public class OrderServiceImpl implements OrderService {
 			}
 			total+=product.getPrice();
 		}
+		order.setTotal(total);
+		order.setStatus(OrderStatus.PAYMENT_PENDING);
 		
-		OrderResponse orderResponse = new OrderResponse();
-		orderResponse.setOrderId(orderSaved.getId());
-		orderResponse.setTotal(total);
-		orderResponse.setStatus("PAYMENT_PENDING");
-		
-		return orderResponse;
+		return orderRepository.saveOrder(order);
 	}
 
 }

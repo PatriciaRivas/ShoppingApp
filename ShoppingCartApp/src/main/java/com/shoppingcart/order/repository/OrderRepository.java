@@ -1,4 +1,4 @@
-package com.shoppingcart.order.dao;
+package com.shoppingcart.order.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,9 @@ public class OrderRepository {
 	private final AtomicInteger sequence = new AtomicInteger(1);
 	
 	public OrderDto saveOrder(OrderDto order) {
-		OrderDto orderUser = getOrderByUserId(order.getUserId());
+		OrderDto orderUser = this.getOrderByUserId(order.getUserId());
 		if(orderUser!=null) {
 			order.setId(orderUser.getId());
-			
-			List<ProductDto> productList= new ArrayList<ProductDto>();
-			productList.addAll(order.getProducts());
-			productList.addAll(productList);
-			
-			order.setProducts(productList);
 		}
 		if(order.getId()==null) {
 			order.setId(sequence.getAndIncrement());

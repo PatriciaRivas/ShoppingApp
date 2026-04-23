@@ -19,6 +19,7 @@ public class PaymentRepository {
 		payment.setPaymentId(sequence.getAndIncrement());
 		payment.setStatus(PaymentStatus.PROCESSED);
 		
+		paymentRegistry.add(payment);
 		return payment;
 	}
 	
